@@ -85,7 +85,25 @@ async function loginController(req,res)
 
 }
 
+async function getCurrentUser(req,res)
+{
+    const { _id, name, email } = req.user;
+
+    res.status(200).json({
+        message: "Current user data fetched successfully",
+        user: {
+            id: _id,
+            name: name,
+            email: email
+        }
+    })
+}
+
+
+
+
 module.exports = {
     registerController,
-    loginController
+    loginController,
+    getCurrentUser
 }
