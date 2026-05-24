@@ -65,7 +65,15 @@ async function renameBoard(req,res)
 
 async function deleteBoard(req,res)
 {
-      
+      const id = req.params.boardId;
+
+      await boardModel.findOneAndDelete({
+        _id: id
+      });
+
+      res.status(200).json({
+        message: "Board deleted successfully"
+      })
 }
 
 
