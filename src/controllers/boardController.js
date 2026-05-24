@@ -1,4 +1,5 @@
 const boardModel = require('../db/models/board.model');
+const userModel = require('../db/models/user.model');
 
 
 async function createBoard(req,res)
@@ -25,7 +26,52 @@ async function createBoard(req,res)
     })
 }
 
+async function getAllBoards(req,res)
+{
+    const { _id } = req.user;
+
+    const boards = await boardModel.find({
+         members: _id
+    }).select("_id title");
+
+    res.status(200).json({
+        message: "Boards fetched successfully",
+        boards: boards
+    })
+}
+
+
+async function renameBoard(req,res)
+{
+    const id = req.params.boardId;
+    const { title } = req.body;
+
+    const board = await boardModel.findOneAndUpdate({
+        _id:id
+    },{
+        title:title
+    },{new:true});
+
+    res.status(200).json({
+        message: "Board title updated successfully",
+        board: {
+            id:board._id,
+            title:board.title
+        }
+    })
+    
+}
+
+
+async function deleteBoard(req,res)
+{
+      
+}
+
 
 module.exports = {
-    createBoard
+    createBoard,
+    getAllBoards,
+    renameBoard,
+    deleteBoard
 }
