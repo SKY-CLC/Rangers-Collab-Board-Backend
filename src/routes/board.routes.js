@@ -8,6 +8,7 @@ router.post('/',authUser,boardController.createBoard);
 router.get('/',authUser,boardController.getAllBoards);
 router.patch('/:boardId',authUser,boardController.renameBoard);
 router.delete('/:boardId',authUser,boardController.deleteBoard);
+router.patch('/:boardId/join',authUser,boardController.joinBoard)
 
 
 

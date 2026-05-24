@@ -46,11 +46,19 @@ async function renameBoard(req,res)
     const id = req.params.boardId;
     const { title } = req.body;
 
+
     const board = await boardModel.findOneAndUpdate({
         _id:id
     },{
         title:title
     },{new:true});
+
+    if(!board)
+    {
+        return res.status(404).json({
+            message: "Board not found"
+        })
+    }
 
     res.status(200).json({
         message: "Board title updated successfully",
@@ -67,9 +75,16 @@ async function deleteBoard(req,res)
 {
       const id = req.params.boardId;
 
-      await boardModel.findOneAndDelete({
+      const boad  = await boardModel.findOneAndDelete({
         _id: id
       });
+
+      if(!board)
+      {
+        return res.status(404).json({
+            message : "Board not found"
+        })
+      }
 
       res.status(200).json({
         message: "Board deleted successfully"
@@ -77,9 +92,48 @@ async function deleteBoard(req,res)
 }
 
 
+async function joinBoard(req,res)
+{
+    const id = req.params.boardId;
+
+    const board = await boardModel.findById(
+        id
+    )
+
+    if(!board)
+    {
+       return res.status(404).json({
+            message: "Board not found"
+        })
+    }
+
+    const alreadyMember = board.members.some(
+        member => member.toString() === req.user._id.toString()
+    )
+
+    if(alreadyMember)
+    {
+        return res.status(400).json({
+            message: "Already a member"
+        })
+    }
+
+
+    board.members.push(req.user._id);
+    await board.save();
+
+    res.status(200).json({
+        message: "Joined board successfully"
+    })
+
+
+}
+
+
 module.exports = {
     createBoard,
     getAllBoards,
     renameBoard,
-    deleteBoard
+    deleteBoard,
+    joinBoard
 }
