@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+
+const boardSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
+
+    members: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user" 
+        }
+    ]
+
+},{timestamps: true});
+
+const boardModel = mongoose.model("board",boardSchema);
+
+module.exports = boardModel;
