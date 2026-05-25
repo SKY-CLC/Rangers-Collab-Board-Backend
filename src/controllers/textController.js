@@ -87,11 +87,29 @@ async function updateText(req, res)
     });
 }
 
+async function deleteText(req, res)
+{
+    const textId = req.params.textId;
+
+    const text = await textModel.findByIdAndDelete(textId);
+
+    if(!text)
+    {
+        return res.status(404).json({
+            message: "Text not found"
+        });
+    }
+
+    res.status(200).json({
+        message: "Text deleted successfully"
+    });
+}
+
 
 
 module.exports = {
       createText,
       getTexts,
       updateText,
-
+      deleteText
 }
