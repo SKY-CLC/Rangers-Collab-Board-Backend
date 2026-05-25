@@ -4,6 +4,6 @@ const router = express.Router();
 const textController = require('../controllers/textController');
 const { authUser } = require('../middlewares/auth.middleware');
 
-router.post('/',authUser,textController.);
+router.post('/',authUser,textController.createText);
 
 module.exports = router;
