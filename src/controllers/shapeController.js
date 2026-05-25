@@ -11,7 +11,7 @@ async function createShape(req,res)
         boardId,
         createdBy: id,
         type,
-        shapeDate
+        shapeData
     });
 
     res.status(201).json({

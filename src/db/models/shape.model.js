@@ -19,7 +19,7 @@ const shapeSchema = new mongoose.Schema({
     ]
   },
 
-  shapeDate: {
+  shapeData: {
     type: Object,
     required: true
   }
