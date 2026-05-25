@@ -75,7 +75,7 @@ async function deleteBoard(req,res)
 {
       const id = req.params.boardId;
 
-      const boad  = await boardModel.findOneAndDelete({
+      const board  = await boardModel.findOneAndDelete({
         _id: id
       });
 

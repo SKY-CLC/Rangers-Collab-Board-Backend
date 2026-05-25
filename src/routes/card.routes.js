@@ -5,7 +5,7 @@ const cardController = require('../controllers/cardController');
 const { authUser } = require('../middlewares/auth.middleware');
 
 
-router.post('/',authUser,cardController.)
+router.post('/',authUser,cardController.createCard);
 
 
 
