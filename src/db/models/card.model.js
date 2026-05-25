@@ -27,7 +27,7 @@ const CardSchema = new mongoose.Schema({
       enum: [
          "Planning",
          "In Progress",
-         "Mission Complete"
+         "Mission Completed"
       ],
 
       default: "Planning"
