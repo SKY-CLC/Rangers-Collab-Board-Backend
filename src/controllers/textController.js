@@ -22,6 +22,24 @@ async function createText(req, res)
     });
 }
 
+async function getTexts(req, res)
+{
+    const boardId = req.params.boardId;
+
+    const texts = await textModel.find({
+        boardId
+    });
+
+    res.status(200).json({
+        message: "Texts fetched successfully",
+        texts
+    });
+}
+
+
+
 module.exports = {
-      createText
+      createText,
+      getTexts,
+      
 }

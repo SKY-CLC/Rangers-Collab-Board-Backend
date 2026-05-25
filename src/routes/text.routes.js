@@ -5,5 +5,7 @@ const textController = require('../controllers/textController');
 const { authUser } = require('../middlewares/auth.middleware');
 
 router.post('/',authUser,textController.createText);
+router.get('/board/:boardId',authUser,textController.getTexts);
+router.patch('/:textId',authUser,textController.)
 
 module.exports = router;
