@@ -36,10 +36,62 @@ async function getTexts(req, res)
     });
 }
 
+async function updateText(req, res)
+{
+    const textId = req.params.textId;
+
+    const { text, x, y, color, fontSize } = req.body;
+
+    const updateFields = {};
+
+    if(text !== undefined)
+    {
+        updateFields.text = text;
+    }
+
+    if(x !== undefined)
+    {
+        updateFields.x = x;
+    }
+
+    if(y !== undefined)
+    {
+        updateFields.y = y;
+    }
+
+    if(color !== undefined)
+    {
+        updateFields.color = color;
+    }
+
+    if(fontSize !== undefined)
+    {
+        updateFields.fontSize = fontSize;
+    }
+
+    const updatedText = await textModel.findByIdAndUpdate(
+        textId,
+        updateFields,
+        { new: true, runValidators: true });
+
+    if(!updatedText)
+    {
+        return res.status(404).json({
+            message: "Text not found"
+        });
+    }
+
+    res.status(200).json({
+        message: "Text updated successfully",
+        text: updatedText
+    });
+}
+
 
 
 module.exports = {
       createText,
       getTexts,
-      
+      updateText,
+
 }

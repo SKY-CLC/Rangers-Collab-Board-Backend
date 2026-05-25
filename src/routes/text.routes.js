@@ -6,6 +6,7 @@ const { authUser } = require('../middlewares/auth.middleware');
 
 router.post('/',authUser,textController.createText);
 router.get('/board/:boardId',authUser,textController.getTexts);
-router.patch('/:textId',authUser,textController.)
+router.patch('/:textId',authUser,textController.updateText);
+
 
 module.exports = router;
