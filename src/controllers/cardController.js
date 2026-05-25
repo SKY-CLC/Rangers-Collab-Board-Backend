@@ -61,9 +61,63 @@ async function getSingleCard(req,res){
   }
 
   res.status(200).json({
-    message: "Card fetched successfully",,
+    message: "Card fetched successfully",
     card: card
   })
+  
+}
+
+async function updateCard(req,res)
+{
+  const cardId = req.params.cardId;
+  const updateFields = req.body;
+
+  const card = await cardModel.findByIdAndUpdate(
+    cardId,
+    updateFields,
+    {new:true}
+  );
+
+  if(!card)
+  {
+    return res.status(404).json({
+      message: "Card not found"
+    })
+  }
+
+  res.status(200).json({
+    message: "Card updated successfully",
+    updateFields: updateFields
+  });
+}
+
+async function deleteCard(req,res)
+{
+  const cardId = req.params.cardId;
+  const {_id} = req.user;
+
+  const card = await cardModel.findById(cardId);
+
+  if(!card)
+  {
+    return res.status(404).json({
+      message: "Card not found"
+    });
+  }
+
+  if(card.createdBy.toString() !== _id.toString())
+  {
+    return res.status(403).json({
+      message: "You are not authorized to delete this card"
+    });
+  }
+
+  await card.deleteOne();
+
+  res.status(200).json({
+    message: "Card deleted successfully"
+  });
+
   
 }
 
@@ -72,5 +126,7 @@ async function getSingleCard(req,res){
 module.exports = {
   createCard,
   getAllCards,
-  getSingleCard
+  getSingleCard,
+  updateCard,
+  deleteCard
 }
