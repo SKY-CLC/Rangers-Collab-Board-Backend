@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const shapeSchema = new mongoose.Schema({
   boardId: {
-    type: mongoose.Schema.Types.ObjectId,      ref: "board"
+    type: mongoose.Schema.Types.ObjectId,      
+    ref: "board"
   },
   createdBy: {
       type:mongoose.Schema.Types.ObjectId,
@@ -18,21 +19,10 @@ const shapeSchema = new mongoose.Schema({
     ]
   },
 
-  x: Number,
-  y: Number,
-
-  width: Number,
-  height: Number,
-
-  radius: Number,
-
-  startX: Number,
-  startY: Number,
-
-  endX: Number,
-  endY: Number,
-
-  color: String,
+  shapeDate: {
+    type: Object,
+    required: true
+  }
   
 },{ timestamps: true });
 
