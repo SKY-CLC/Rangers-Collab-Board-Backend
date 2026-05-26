@@ -3,7 +3,7 @@ const { uploadFile, deleteFile } = require('../service/storage.service');
 const { v4: uuidv4 } = require('uuid');
 
 async function createCard(req,res){
-  const { title, description, boardId, status, labels: {text,color} } = req.body
+  const { title, description, boardId, status, labels } = req.body
   const {_id} = req.user;
 
   const card = await cardModel.create({
@@ -12,12 +12,7 @@ async function createCard(req,res){
     boardId: boardId,
     status: status,
     createdBy: _id,
-    labels: [
-      {
-        text: text,
-        color: color
-      }
-    ]
+    labels: labels
   })
 
   res.status(201).json({
