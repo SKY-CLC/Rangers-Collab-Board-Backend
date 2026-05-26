@@ -8,6 +8,7 @@ const cardRoutes = require('./routes/card.routes');
 const shapeRoutes = require('./routes/shape.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
 const textRoutes = require('./routes/text.routes');
+const searchRoutes = require('./routes/search.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,6 +19,7 @@ app.use('/api/cards',cardRoutes);
 app.use('/api/shapes',shapeRoutes);
 app.use('/api/analytics',analyticsRoutes);
 app.use('/api/texts',textRoutes);
+app.use('/api/search',searchRoutes);
 
 
 module.exports = app;
