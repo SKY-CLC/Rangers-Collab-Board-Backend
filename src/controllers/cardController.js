@@ -1,5 +1,5 @@
 const cardModel = require('../db/models/card.model');
-const uploadFile = require('../service/storage.service');
+const { uploadFile, deleteFile } = require('../service/storage.service');
 const { v4: uuidv4 } = require('uuid');
 
 async function createCard(req,res){
@@ -159,6 +159,32 @@ async function addAttachment(req,res)
 }
 
 
+async function deleteAttachment(req,res)
+{
+      const cardId = req.params.cardId;
+
+      const card = await cardModel.findById(cardId);
+
+      if(!card || !card.attachment)
+      {
+        return res.status(404).json({
+          message: "Attachment not found"
+        })
+      }
+      
+      const fileId = card.attachment.fileId;
+
+      await deleteFile(fileId);
+
+      card.attachment = null;
+      await card.save();
+
+      res.status(200).json({
+        message: "Attachment deleted successfully"
+      })
+}
+
+
 
 
 module.exports = {
@@ -167,5 +193,6 @@ module.exports = {
   getSingleCard,
   updateCard,
   deleteCard,
-  addAttachment
+  addAttachment,
+  deleteAttachment
 }

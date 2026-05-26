@@ -17,4 +17,14 @@ async function uploadFile(file,filename)
 }
 
 
-module.exports = uploadFile
+async function deleteFile(fileId)
+{
+   await imageKit.deleteFile(fileId);
+}
+
+
+module.exports = 
+{
+  uploadFile,
+  deleteFile
+}
