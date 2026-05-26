@@ -6,7 +6,7 @@ async function createText(req, res)
 
     const { boardId, text, x, y, color, fontSize } = req.body;
 
-    const text = await textModel.create({
+    const txt = await textModel.create({
         boardId,
         createdBy: userId,
         text,
@@ -18,7 +18,7 @@ async function createText(req, res)
 
     res.status(201).json({
         message: "Text created successfully",
-        text: text
+        text: txt
     });
 }
 

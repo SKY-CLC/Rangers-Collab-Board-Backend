@@ -20,11 +20,7 @@ async function createCard(req,res){
 
   res.status(201).json({
     message: "Card created successfully",
-    card:{
-      id: card._id,
-      title: card.title,
-      status: card.status
-    }
+    card:card
   });
 }
 
@@ -121,11 +117,19 @@ async function deleteCard(req,res)
   
 }
 
+async function addAttachment(req,res)
+{
+  const file = req.file;
+  const cardId = req.params.cardId;
+  console.log(file);
+}
+
 
 module.exports = {
   createCard,
   getAllCards,
   getSingleCard,
   updateCard,
-  deleteCard
+  deleteCard,
+  addAttachment
 }
