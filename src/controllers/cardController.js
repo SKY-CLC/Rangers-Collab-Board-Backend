@@ -89,7 +89,7 @@ async function deleteCard(req,res)
   const cardId = req.params.cardId;
   const {_id} = req.user;
 
-  const card = await cardModel.findById(cardId);
+  const card = await cardModel.findByIdAndDelete(cardId);
 
   if(!card)
   {
@@ -97,15 +97,6 @@ async function deleteCard(req,res)
       message: "Card not found"
     });
   }
-
-  if(card.createdBy.toString() !== _id.toString())
-  {
-    return res.status(403).json({
-      message: "You are not authorized to delete this card"
-    });
-  }
-
-  await card.deleteOne();
 
   res.status(200).json({
     message: "Card deleted successfully"

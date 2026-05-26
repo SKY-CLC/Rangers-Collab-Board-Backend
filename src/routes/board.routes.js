@@ -6,6 +6,7 @@ const {authUser} = require('../middlewares/auth.middleware')
 
 router.post('/',authUser,boardController.createBoard);
 router.get('/',authUser,boardController.getAllBoards);
+router.get('/:boardId',authUser,boardController.getSingleBoard)
 router.patch('/:boardId',authUser,boardController.renameBoard);
 router.delete('/:boardId',authUser,boardController.deleteBoard);
 router.patch('/:boardId/join',authUser,boardController.joinBoard);

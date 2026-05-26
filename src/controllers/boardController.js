@@ -1,5 +1,7 @@
 const boardModel = require('../db/models/board.model');
 const userModel = require('../db/models/user.model');
+const cardModel = require('../db/models/card.model');
+const { request } = require('express');
 
 
 async function createBoard(req,res)
@@ -24,6 +26,31 @@ async function createBoard(req,res)
         }
 
     })
+}
+
+async function getSingleBoard(req,res) {
+    
+    const boardId = request.params.boardId;
+
+    const board = await boardModel.findById(boardId);
+
+    if(!board)
+    {
+        return res.status(404).json({
+            message: "Board not found"
+        })
+    }
+
+    const cards = await boardModel.findOne({
+        boardId
+    })
+
+    res.status(200).json({
+        message: "Board fetched successfully",
+        board,
+        cards
+    });
+
 }
 
 async function getAllBoards(req,res)
@@ -132,6 +159,7 @@ async function joinBoard(req,res)
 
 module.exports = {
     createBoard,
+    getSingleBoard,
     getAllBoards,
     renameBoard,
     deleteBoard,
