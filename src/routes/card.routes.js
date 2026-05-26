@@ -9,6 +9,10 @@ const upload = multer({storage: multer.memoryStorage()})
 
 
 router.post('/',authUser,cardController.createCard);
+router.get('/board/:boardId',authUser,cardController.getAllCards);
+router.get('/:cardId',authUser,cardController.getSingleCard);
+router.patch('/:cardId',authUser,cardController.updateCard);
+router.delete('/:cardId',authUser,cardController.deleteCard);
 router.post('/:cardId/attachment',authUser,upload.single("image"),cardController.addAttachment);
 router.delete('/:cardId/attachment',authUser,cardController.deleteAttachment);
 
