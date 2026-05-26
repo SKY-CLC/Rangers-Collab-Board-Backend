@@ -1,4 +1,6 @@
 const cardModel = require('../db/models/card.model');
+const uploadFile = require('../service/storage.service');
+const { v4: uuidv4 } = require('uuid');
 
 async function createCard(req,res){
   const { title, description, boardId, status, labels: {text,color} } = req.body
@@ -121,8 +123,42 @@ async function addAttachment(req,res)
 {
   const file = req.file;
   const cardId = req.params.cardId;
-  console.log(file);
+
+  const card = await cardModel.findById(cardId);
+
+  if(!card)
+  {
+    return res.status(404).json({
+    message: "Card not found"
+    })
+  }
+
+  if(!file)
+  {
+    return res.status(400).json({
+        message: "File is required"
+    });
+  }
+  
+  const result = await uploadFile(file.buffer,`${uuidv4()}`);
+
+  const attachmentData  = {
+   fileId: result.fileId,
+   name: result.name,
+   url: result.url
+  }
+
+  card.attachment = attachmentData;
+  await card.save();
+   
+
+  res.status(200).json({
+    message: "Attachment added successfully",
+    result
+  })
 }
+
+
 
 
 module.exports = {

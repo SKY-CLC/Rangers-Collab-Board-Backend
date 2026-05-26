@@ -40,12 +40,13 @@ const CardSchema = new mongoose.Schema({
       }
    ],
 
-   attachments: [
+   attachment: 
       {
-         url: String,
-         public_id: String
+         fileId: String,
+         name: String,
+         url: String
       }
-   ]
+   
 
 }, { timestamps: true });
 
