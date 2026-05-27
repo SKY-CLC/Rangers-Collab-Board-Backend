@@ -12,9 +12,9 @@ function initSocketServer(httpServer)
         }
     });
 
-    io.use(async (Socket, next)=>{
+    io.use(async (socket, next)=>{
         
-        const cookies = cookie.parse(Socket.handshake.header?.cookie || "");
+        const cookies = cookie.parse(socket.handshake.headers?.cookie || "");
         
         if(!cookies.token)
         {
@@ -26,7 +26,7 @@ function initSocketServer(httpServer)
               
               const user = await userModel.findById(decoded.id);
 
-              Socket.user = user;
+              socket.user = user;
 
               next();
 
@@ -53,7 +53,7 @@ function initSocketServer(httpServer)
         })
     });
 
-
+   return io
 
 }
 

@@ -2,7 +2,7 @@ function boardSocket(io,socket)
 {
     socket.on("join-board",(data)=>{
 
-        const { boardId, user: { id,name } } = data;
+        const { boardId } = data;
 
         socket.join(boardId);
 
@@ -10,8 +10,8 @@ function boardSocket(io,socket)
 
         socket.to(boardId).emit("user-joined",
             {
-                userId: id,
-                name: name
+                userId: socket.user._id,
+                name: socket.user.name
         });
 
     });
@@ -19,7 +19,7 @@ function boardSocket(io,socket)
    
     socket.on("leave-board",(data)=>{
 
-        const { boardId, user: { id, name } } = data;
+        const { boardId } = data;
 
         socket.leave(boardId);
 
@@ -27,8 +27,8 @@ function boardSocket(io,socket)
 
         socket.to(boardId).emit("user-left",{
               
-            userId: id,
-            name: name
+            userId: socket.user._id,
+            name: socket.user.name
         });
 
     });
