@@ -174,6 +174,8 @@ async function addAttachment(req,res)
 
 async function deleteAttachment(req,res)
 {
+      const io = req.app.get("io");
+
       const cardId = req.params.cardId;
 
       const card = await cardModel.findById(cardId);
