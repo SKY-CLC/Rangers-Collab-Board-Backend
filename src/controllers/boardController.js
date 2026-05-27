@@ -30,7 +30,7 @@ async function createBoard(req,res)
 
 async function getSingleBoard(req,res) {
     
-    const boardId = request.params.boardId;
+    const boardId = req.params.boardId;
 
     const board = await boardModel.findById(boardId);
 
@@ -41,7 +41,7 @@ async function getSingleBoard(req,res) {
         })
     }
 
-    const cards = await boardModel.findOne({
+    const cards = await cardModel.find({
         boardId
     })
 
