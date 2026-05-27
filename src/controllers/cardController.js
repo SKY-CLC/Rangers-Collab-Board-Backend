@@ -3,6 +3,9 @@ const { uploadFile, deleteFile } = require('../service/storage.service');
 const { v4: uuidv4 } = require('uuid');
 
 async function createCard(req,res){
+
+   const io = req.app.get("io");
+
   const { title, description, boardId, status, labels } = req.body
   const {_id} = req.user;
 
@@ -15,6 +18,11 @@ async function createCard(req,res){
     labels: labels
   })
 
+
+  io.to(boardId).emit("create-card",{
+    card
+  });
+
   res.status(201).json({
     message: "Card created successfully",
     card:card
@@ -26,7 +34,7 @@ async function getAllCards(req,res)
   const  boardId  = req.params.boardId;
   const cards = await cardModel.find({
     boardId
-  }).select("_id title status");
+  });
 
   if(!cards)
   {
@@ -62,6 +70,8 @@ async function getSingleCard(req,res){
 
 async function updateCard(req,res)
 {
+   const io = req.app.get("io"); 
+
   const cardId = req.params.cardId;
   const updateFields = req.body;
 
@@ -78,6 +88,10 @@ async function updateCard(req,res)
     })
   }
 
+  io.to(card.boardId.toString()).emit("update-card",{
+    card
+  });
+
   res.status(200).json({
     message: "Card updated successfully",
     updateFields: updateFields
@@ -86,6 +100,9 @@ async function updateCard(req,res)
 
 async function deleteCard(req,res)
 {
+
+  const io = req.app.get("io");
+
   const cardId = req.params.cardId;
   const {_id} = req.user;
 
@@ -98,6 +115,10 @@ async function deleteCard(req,res)
     });
   }
 
+  io.to(card.boardId.toString()).emit("delete-card",{
+    cardId
+  });
+
   res.status(200).json({
     message: "Card deleted successfully"
   });
@@ -107,6 +128,8 @@ async function deleteCard(req,res)
 
 async function addAttachment(req,res)
 {
+  const io = req.app.get("io");
+  
   const file = req.file;
   const cardId = req.params.cardId;
 
@@ -136,7 +159,11 @@ async function addAttachment(req,res)
 
   card.attachment = attachmentData;
   await card.save();
-   
+
+   io.to(card.boardId.toString()).emit("attachment-added",{
+    cardId: card._id,
+    attachment: card.attachment
+   })
 
   res.status(200).json({
     message: "Attachment added successfully",
@@ -164,6 +191,10 @@ async function deleteAttachment(req,res)
 
       card.attachment = null;
       await card.save();
+
+      io.to(card.boardId.toString()).emit("attachment-deleted",{
+      cardId: card._id
+      });
 
       res.status(200).json({
         message: "Attachment deleted successfully"

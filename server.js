@@ -8,7 +8,8 @@ const httpServer = http.createServer(app);
 
 
 connectDB();
-initSocketServer(httpServer);
+const io = initSocketServer(httpServer);
+app.set("io", io);
 
 httpServer.listen(3000,()=>{
    console.log("Server is running");
