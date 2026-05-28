@@ -32,8 +32,11 @@ function shapeSocket(io,socket)
         socket.to(boardId).emit("shape-drawing",{
             shapeId,
             points
-        })
-    })
+        });
+    });
 
 
 }
+
+
+module.exports = shapeSocket;

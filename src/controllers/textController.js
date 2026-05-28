@@ -2,6 +2,8 @@ const textModel = require('../db/models/text.model');
 
 async function createText(req, res)
 {
+    const io = req.app.get("io");
+
     const userId = req.user._id;
 
     const { boardId, text, x, y, color, fontSize } = req.body;
@@ -14,6 +16,12 @@ async function createText(req, res)
         y,
         color,
         fontSize
+    });
+
+    io.to(boardId).emit("create-text",{
+       
+        text: txt
+        
     });
 
     res.status(201).json({
@@ -38,6 +46,8 @@ async function getTexts(req, res)
 
 async function updateText(req, res)
 {
+    const io = req.app.get("io");
+
     const textId = req.params.textId;
 
     const { text, x, y, color, fontSize } = req.body;
@@ -81,6 +91,12 @@ async function updateText(req, res)
         });
     }
 
+    io.to(updatedText.boardId.toString()).emit("update-text",{
+
+         text: updatedText
+
+    });
+
     res.status(200).json({
         message: "Text updated successfully",
         text: updatedText
@@ -89,6 +105,8 @@ async function updateText(req, res)
 
 async function deleteText(req, res)
 {
+    const io = req.app.get("io");
+
     const textId = req.params.textId;
 
     const text = await textModel.findByIdAndDelete(textId);
@@ -99,6 +117,12 @@ async function deleteText(req, res)
             message: "Text not found"
         });
     }
+
+    io.to(text.boardId.toString()).emit("delete-text",{
+        
+        textId
+
+    });
 
     res.status(200).json({
         message: "Text deleted successfully"
