@@ -21,7 +21,7 @@ async function createText(req, res)
     io.to(boardId).emit("create-text",{
        
         text: txt
-        
+
     });
 
     res.status(201).json({
@@ -128,7 +128,6 @@ async function deleteText(req, res)
         message: "Text deleted successfully"
     });
 }
-
 
 
 module.exports = {

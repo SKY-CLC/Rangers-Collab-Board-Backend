@@ -3,6 +3,9 @@ const cookie = require('cookie');
 const jwt = require('jsonwebtoken');
 const userModel = require('../db/models/user.model');
 const boardSocket = require('./events/board.socket');
+const cardSocket = require('./events/card.socket');
+const shapeSocket = require('./events/shape.socket');
+const textSocket = require('./events/text.socket');
 
 function initSocketServer(httpServer)
 {
@@ -44,6 +47,9 @@ function initSocketServer(httpServer)
         console.log("User connected: ",socket.id);
 
         boardSocket(io,socket);
+        cardSocket(io,socket);
+        shapeSocket(io,socket);
+        textSocket(io,socket);
 
 
         socket.on("disconnect",()=>{
