@@ -6,6 +6,8 @@ const { request } = require('express');
 
 async function createBoard(req,res)
 {
+    const io = req.app.get("io");
+
     const { title } = req.body;
     const user  = req.user;
 
@@ -16,6 +18,10 @@ async function createBoard(req,res)
             user._id
         ]
     });
+
+    io.emit("create-board",{
+        board
+    })
 
     res.status(201).json({
         message: "Board created successfully",
@@ -70,6 +76,8 @@ async function getAllBoards(req,res)
 
 async function renameBoard(req,res)
 {
+    const io = req.app.get("io");
+
     const id = req.params.boardId;
     const { title } = req.body;
 
@@ -86,6 +94,12 @@ async function renameBoard(req,res)
             message: "Board not found"
         })
     }
+
+
+    io.to(board._id.toString()).emit("rename-board",{
+        boardId: board._id,
+        title: board.title
+    })
 
     res.status(200).json({
         message: "Board title updated successfully",
@@ -121,6 +135,9 @@ async function deleteBoard(req,res)
 
 async function joinBoard(req,res)
 {
+
+    const io = req.app.get("io");
+
     const id = req.params.boardId;
 
     const board = await boardModel.findById(
@@ -148,6 +165,16 @@ async function joinBoard(req,res)
 
     board.members.push(req.user._id);
     await board.save();
+
+    io.to(id).emit("join-board",{
+
+        boardId: id,
+        user: {
+            id: req.user._id,
+            name: req.user.name
+        }
+
+    });
 
     res.status(200).json({
         message: "Joined board successfully"

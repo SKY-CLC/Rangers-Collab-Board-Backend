@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 async function createCard(req,res){
 
-   const io = req.app.get("io");
+  const io = req.app.get("io");
 
   const { title, description, boardId, status, labels } = req.body
   const {_id} = req.user;
